@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { StyleSheet, Alert,FlatList,AsyncStorage,TouchableHighlight,View,  ScrollView, Image,ActivityIndicator} from 'react-native';
+import { StyleSheet, Alert,TextInput,FlatList,AsyncStorage,TouchableHighlight,View,  ScrollView, Image,ActivityIndicator} from 'react-native';
 import { Text,Textarea,CheckBox,ListItem,Button,Body} from 'native-base';
 
 
@@ -181,6 +181,10 @@ responder(){
       console.log(responseJson);
       this.getHilos()
       this.setState({ 'loading': false })
+      this.setState({ 'respuesta': '' })
+      this._TextInput.clear()
+      // console.log(this._textArea)
+      
     })
     .catch((error) => {
       console.error(error);
@@ -213,9 +217,18 @@ responder(){
 
 
                 <View style={styles.respuesta}>
+                    
                     <View style={styles.respuestaArea}>
-                         <Textarea rowSpan={5} bordered placeholder="Responder" onChangeText={(respuesta) => this.setState({respuesta})}/>
+                          <TextInput
+                            multiline= {true}
+                            style={{borderColor: 'green', borderWidth: 1}}
+                            onChangeText={(respuesta) => this.setState({respuesta})}
+                            ref={ (c) => this._TextInput = c }
+                  
+                />
+                         
                     </View>
+                   
    
                 </View>
 
