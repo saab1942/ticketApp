@@ -44,16 +44,6 @@ const RootStack = createStackNavigator(
 );
 
 
-class LogoTitle extends Component {
-  render() {
-    return (
-      <View>
-      <Text> hola</Text>
-      </View>
-    );
-  }
-}
-
 export default class App extends Component {
   render() {
     return (
