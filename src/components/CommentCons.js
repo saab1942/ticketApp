@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#d1cad1',
-    backgroundColor: '#E1FFD6',
+    backgroundColor: 'lightcyan',
     padding: 8,
   
   },
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#d1cad1',
-    backgroundColor: '#EDEDED',
+    backgroundColor: 'gainsboro',
     padding: 8,
   
   },
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
   },
 
    textInterno: {
-    color: 'red',
+    color: '#D28E00',
     fontSize: 12
   },
 
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
 
   name:{
-    color: 'red'
+    color: '#D26500'
   }
  
 

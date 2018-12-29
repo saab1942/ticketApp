@@ -19,37 +19,37 @@ export default class Ticket extends Component {
 
                   <View style={styles.Container}>
 
-                        <View  style={styles.ticketHeader}>
+                        <View  style={styles.Header}>
 
-                            <View  style={styles.ticketHeaderLeft}>
+                            <View  style={styles.HeaderLeft}>
                                <Text style={styles.nroTicket}>{this.props.ticket.nroTicket}</Text>
                             </View>
 
-                            <View  style={styles.ticketHeaderRight}>
+                            <View  style={styles.HeaderRight}>
                                 <Text style={styles.estado}>{this.estadoColor(this.props.ticket.estado)}</Text>
                             </View>
 
                         </View>
 
 
-                        <View  style={styles.ticketHeader2}>
+                        <View  style={styles.Header2}>
 
-                            <View  style={styles.ticketHeader2Up}>
+                            <View  style={styles.Header2Up}>
                               <Text style={styles.asunto}>{this.props.ticket.asunto}</Text>
                             </View >
 
-                            <View  style={styles.ticketHeader2Down}>
+                            <View  style={styles.Header2Down}>
 
-                                  <View  style={styles.ticketHeader2DownLeft}>
+                                  <View  style={styles.Header2DownLeft}>
 
-                                    <Text style={styles.topicoTicket}> {
+                                    <Text style={styles.topico}> {
                                     this.props.ticket.ntop}
                                     </Text>
                                   
                                   </View>
 
-                                   <View  style={styles.ticketHeader2DownRight}>
-                                        <Text style={styles.fechaTicket}>
+                                   <View  style={styles.Header2DownRight}>
+                                        <Text style={styles.fecha}>
                                            { moment(this.props.ticket.created_at).format('ll')}
                                         </Text>
 
@@ -60,24 +60,24 @@ export default class Ticket extends Component {
                          </View>
 
 
-                       <View  style={styles.ticketBody}>
+                       <View  style={styles.Body}>
                           <HTML html={this.props.ticket.cuerpo}  />
                        </View>
 
-                        <View  style={styles.ticketFooter}>
+                        <View  style={styles.Footer}>
 
                            <View >
-                               <Text style={styles.nombreTicket}> {this.props.ticket.nombre}</Text>
+                               <Text style={styles.nombre}> {this.props.ticket.nombre}</Text>
                             </View>
 
                              <View >
-                                <Text style={styles.emailTicket}>
+                                <Text style={styles.email}>
                                   {this.props.ticket.email}     
                                 </Text>
                              </View >
 
                              <View >
-                                <Text style={styles.telefonoTicket}>
+                                <Text style={styles.telefono}>
                                   {this.props.ticket.telefono}     
                                 </Text>
                              </View >
@@ -134,92 +134,68 @@ export default class Ticket extends Component {
     shadowOpacity: 1.0   
   },
 
-  ticketHeader: {
+  Header: {
     flex: 1,
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: '#EEE',  
   },
 
-   ticketHeaderLeft: {
+   HeaderLeft: {
     flex: 1,
    
   },
-   ticketHeaderRight: {
+   HeaderRight: {
     flex: 1,
     alignItems: 'flex-end' 
    
   },
 
-    ticketHeader2: {
+    Header2: {
     flex: 1,
     padding: 5
   },
 
-    ticketHeader2Up: {
+    Header2Up: {
     flex: 1,
     flexDirection: 'row',
   },
 
-  ticketHeader2Down: {
+  Header2Down: {
     flex: 1,
     flexDirection: 'row',
   },
 
-  ticketHeader2DownLeft: {
+  Header2DownLeft: {
     flex: 1, 
   },
 
-  ticketHeader2DownRight: {
+  Header2DownRight: {
     flex: 1,
     alignItems: "flex-end",
   },
 
-  fechaTicket: {
-    fontSize: 13,
-    color: '#EEAC14'    
-  },
-
-  topicoTicket: {
-    fontSize: 14,    
-  },
   
-  ticketBody: {
+  Body: {
     flex: 1,
     padding: 10,
     borderWidth: 1,
     borderColor: '#EEE',
   },
     
-  ticketFooter: {
+  Footer: {
     flex: 1,
     alignItems: 'flex-end',
   },
 
-  nombreTicket:
-  {
-    fontSize: 12
-  },
-  
-  emailTicket: {
-    fontSize: 12 
-  },
- 
- telefonoTicket: {
-  fontSize: 12
- },
-
   nroTicket: {   
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#2196F3',  
+    color: '#46AFC4',  
   },
 
-  estado: {
-    fontSize: 14,
-    color: '#000',
-  },
 
+ 
   estadoCerrado: {
     color: '#ff6656',
     fontSize: 14,
@@ -235,21 +211,45 @@ export default class Ticket extends Component {
     fontSize: 14,
   },
 
-
   asunto: {
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#000'
   },
 
-   topico: {
-    fontSize: 15,
-    color: '#000'
+  topico: {
+    fontSize: 16, 
+    color: '#3D7068'   
+  },
+  
+
+  fecha: {
+    fontSize: 13,
+    color: 'slategray'    
   },
 
-  created: {
-    fontSize: 12,
-    color: '#777777',
+  
+
+
+
+
+  nombre:
+  {
+    fontSize: 12
   },
+  
+  email: {
+    fontSize: 12 
+  },
+ 
+ telefono: {
+  fontSize: 12
+ },
+
+  
+
+
+
 
   
 

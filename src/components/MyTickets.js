@@ -75,7 +75,7 @@ export default class Tickets extends Component {
 
   getTickets(){
 
-      fetch('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/tickets', {
+      fetch('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/mytickets', {
        method: 'GET',
          headers: {
             'Accept': 'application/json',
@@ -175,20 +175,24 @@ export default class Tickets extends Component {
 
 }//fin component
 
-const styles = StyleSheet.create({
+  const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 1,
     backgroundColor: '#F5FCFF',
   },
 
-   ticketContainer: {  
+   ticketContainer: {
+     
     flex: 1,
     flexDirection: 'row',
+    
     justifyContent: "space-between",
+    
     alignItems:"center",
     paddingRight: 5
   },
+
 
   leftTicket:
   {
@@ -197,6 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center' 
   },
   
+ 
   rigthTicket: {
     flex: 8,
   },
@@ -216,7 +221,10 @@ const styles = StyleSheet.create({
   {
     flex: 1,
     alignItems: 'flex-end' 
+    
+
   },
+ 
  
   nroTicket: {
     fontWeight: 'bold',
@@ -230,7 +238,7 @@ const styles = StyleSheet.create({
     color: '#000'
   },
 
-  topico: {
+   topico: {
     fontSize: 14,
     color: '#3D7068'
   },
@@ -260,6 +268,8 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
 
+  
+  
 })
 
 

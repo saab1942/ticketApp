@@ -60,7 +60,7 @@ export default class Hilos extends Component {
         .then((storageToken) => {
           this.setState({ 'token': storageToken })
 
-            fetch('http://10.1.1.241/tickets/public/api/oauth/user', {
+            fetch('https://soporte.educaciondigitaltuc.gob.ar/api/oauth/user', {
                method: 'GET',
                headers: {
                   'Accept': 'application/json',
@@ -89,12 +89,11 @@ export default class Hilos extends Component {
 }
 
 
-
 getTicket(){
 
   let ticket_id = this.props.navigation.state.params.ticket.toString()
 
-   fetch('http://10.1.1.241/tickets/public/api/CEL/tickets/'+ticket_id, {
+   fetch('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/tickets/'+ticket_id, {
    method: 'GET',
      headers: {
         'Accept': 'application/json',
@@ -114,9 +113,9 @@ getTicket(){
 
   getHilos(){
     let ticket_id = this.props.navigation.state.params.ticket.toString()
-    console.log('http://10.1.1.241/tickets/public/api/CEL/tickets/'+ticket_id+'/hilos')
+    console.log('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/tickets/'+ticket_id+'/hilos')
 
-     fetch('http://10.1.1.241/tickets/public/api/CEL/tickets/'+ticket_id+'/hilos', {
+     fetch('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/tickets/'+ticket_id+'/hilos', {
    method: 'GET',
      headers: {
         'Accept': 'application/json',
@@ -137,7 +136,7 @@ getTicket(){
 
     // resulta q setstate es asyncrono o sea que cambia cuando se le canta el ...
     //por lo tanto usare logica negativa con el valor actual que tenga el estado
-    //y al final cambiare el setstate
+    //y al final cambiare el chk
     
      
         if (this.state.chkCerrar== false) {
@@ -145,6 +144,7 @@ getTicket(){
         } else {
           this.setState({estadoTicket: 'resolución'});
         }
+
         this.setState({chkCerrar: !this.state.chkCerrar});      
   }
 
@@ -160,10 +160,19 @@ getTicket(){
   }
   
 responder(){
+
+  if (this.state.respuesta=='' ) {
+     Alert.alert(
+         'La respuesta no puede ser vacia.'
+      )
+  }
+  else
+  {
+
   this.setState({ 'loading': true })
   let ticket_id = this.props.navigation.state.params.ticket.toString()
 
-  fetch('http://10.1.1.241/tickets/public/api/CEL/tickets/'+ticket_id+'/hilos', {
+  fetch('https://soporte.educaciondigitaltuc.gob.ar/api/CEL/tickets/'+ticket_id+'/hilos', {
       method: 'POST',
        headers: {
         'Accept': 'application/json',
@@ -182,6 +191,8 @@ responder(){
       this.getHilos()
       this.setState({ 'loading': false })
       this.setState({ 'respuesta': '' })
+      this.setState({chkCerrar: false});    
+      this.setState({chkTipo: false});    
       this._TextInput.clear()
       // console.log(this._textArea)
       
@@ -189,6 +200,8 @@ responder(){
     .catch((error) => {
       console.error(error);
     })
+
+  }
 }
 
 
@@ -221,13 +234,20 @@ responder(){
                     <View style={styles.respuestaArea}>
                           <TextInput
                             multiline= {true}
-                            style={{borderColor: 'green', borderWidth: 1}}
+                            style={{borderColor: '#ffcc66', borderWidth: 1}}
                             onChangeText={(respuesta) => this.setState({respuesta})}
                             ref={ (c) => this._TextInput = c }
                   
-                />
+                          />
+                
                          
                     </View>
+
+                     <View style={styles.respuestaButton}>                 
+
+                       {this.showActivity()}                  
+
+                     </View>   
                    
    
                 </View>
@@ -246,13 +266,7 @@ responder(){
                   </ListItem>
                   
                 
-                <View style={styles.respuestaButton}>
-
-                  <Button info onPress={this.responder} ><Text> Responder </Text></Button>  
-
-                   <ActivityIndicator animating={this.state.loading} size="large" color="#0000ff" />
-
-                </View>   
+               
 
              </View>
          </ScrollView>
@@ -261,6 +275,26 @@ responder(){
     );
   }
 
+  showActivity() {
+
+      if(this.state.loading)
+      {
+         return <ActivityIndicator  size="large" color="#0000ff" />  ;
+      }
+      else
+      {
+         return <TouchableHighlight style={styles.buttonContainer}  onPress={this.responder} >
+                   <Image
+                    
+                   style={styles.iconSend}
+                   source={require('/ticketApp/send.png')}
+                   />
+                </TouchableHighlight>  ;
+      }
+      
+  }
+
+  
 
   tipoComment(item) {
 
@@ -275,9 +309,6 @@ responder(){
       
   }
 
-
-
-
 }
 
 
@@ -287,24 +318,27 @@ const styles = StyleSheet.create({
     padding: 1,
     backgroundColor: '#F5FCFF',
   },
+
   respuesta: {
     flex: 1,
     flexDirection: 'row',
     padding: 5,
     backgroundColor: '#F5FCFF',
+    borderTopWidth: 1,
+    borderColor: '#EEE', 
   },
+
   cerrar: {
     flex: 1,
     flexDirection: 'row',
-    alignContent: 'space-between' 
-   
+    alignContent: 'space-between'  
   },
-   textCerrar: {
+
+  textCerrar: {
     margin: 10,
-    fontSize: 14
-   
-   
+    fontSize: 14 
   },
+
   interno: {
     flex: 1,
     flexDirection: 'row',
@@ -312,21 +346,27 @@ const styles = StyleSheet.create({
 
   textInterno: {
    margin: 10,
-    fontSize: 14
-   
+   fontSize: 14
   },
 
-    respuestaArea: {
+  respuestaArea: {
     flex: 4,
     padding: 5,
   },
 
-    respuestaButton: {
+  respuestaButton: {
     flex: 1,
-    flexDirection: 'column',  
-    alignContent: 'flex-end',
-    alignItems: 'flex-end'   
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+ 
+  buttonContainer:{
+    
+  },
 
+  iconSend: { 
+    width: 45,
+    height: 45
   },
 
 })

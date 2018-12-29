@@ -21,7 +21,7 @@ export default class Index extends Component {
       AsyncStorage.getItem('access_token')
         .then((storageToken) => {
           this.setState({ 'token': storageToken })
-            fetch('http://10.1.3.23/tickets/public/api/oauth/user', {
+            fetch('https://soporte.educaciondigitaltuc.gob.ar/api/oauth/user', {
                method: 'GET',
                headers: {
                   'Accept': 'application/json',

@@ -1,8 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
 
 import React, { Component } from 'react';
 import {
@@ -15,7 +10,8 @@ import {
   TouchableOpacity ,
   Alert,
   AsyncStorage,
-  Image 
+  Image,
+  ActivityIndicator 
 } from 'react-native';
 
 
@@ -32,65 +28,14 @@ export default class Login extends Component {
     this.state = {
       email: '',
       pass: '',
-      token: ''
+      token: '',
+      loading: false,
     };
     // tuve que hacer este bind sino aceptar no reconocia this.state
     //la otra forma es usar la funcion flecha
      this.login=this.login.bind(this);
   }
 
-  componentDidMount() {
-    this.checkAuth()
-  }
-
-  checkAuth() {
-      AsyncStorage.getItem('access_token')
-        .then((storageToken) => {
-          this.setState({ 'token': storageToken })
-          console.log(storageToken)
-
-         
-
-            fetch('http://10.1.1.241/tickets/public/api/oauth/user', {
-               method: 'GET',
-               headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': 'Bearer ' + this.state.token
-                }, 
-            })
-            .then((response) => response.json())
-              .then((responseJson) => {
-                console.log('success')
-
-
-                console.log(responseJson)
-                console.log(responseJson.data)
-                if(responseJson.data != undefined)
-                {
-                  console.log('estas authenticado' + storageToken)
-
-                 
-                  this.props.navigation.navigate('Tickets')
-                }
-                else
-                {
-                   console.log('debes logearte')
-                   this.setState({ 'token': '' })
-                }
-               
-
-              })
-              .catch((error) => {
-                console.log('error')
-                console.error(error);
-              })
-        })
-
- 
-
-
-  }
 
   _storeToken = async (value) => {
   try {
@@ -106,8 +51,16 @@ export default class Login extends Component {
 
 login(){
 
+  if (this.state.email=='' || this.state.pass=='') {
+     Alert.alert(
+         'Email y/o Contraseña no puede/n estar vacio/s'
+      )
+  } else 
+  {
 
-  fetch('http://10.1.1.241/tickets/public/api/oauth/login', {
+  // http://10.1.3.10/tickets/public/api/oauth/login
+  this.setState({ 'loading': true })
+  fetch('https://soporte.educaciondigitaltuc.gob.ar/api/oauth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -121,17 +74,42 @@ login(){
   })
    .then(response => response.json())
     .then((responseJson) => {
-      console.log(responseJson);
-      this._storeToken(responseJson.access_token)
-      this.props.navigation.navigate('Ticket')
-      // this.props.navigation.navigate('Ticket',{access_token: access_token})
+      // si no esta autorizado devuelve {message: "Unauthorized"}
+      //pero entra por success no por error asi que tengo q tomarlo de esta forma
+      // console.log(responseJson)
+      this.setState({ 'loading': false })
+
+      // {access_token: "eyJ..", token_type: "Bearer", expires_at: "2019-12-06 16:26:46"}
+      if(responseJson.access_token != undefined)
+        { 
+            this._storeToken(responseJson.access_token)
+            this.props.navigation.navigate('Tickets')
+        }
+      else
+        // Los errores de validacion tambien entran por aqui
+        //{message: "The given data was invalid.", errors: { email: ["El campo email no corresponde con una dirección de e-mail válida."]}}
+
+
+        {
+            Alert.alert(
+           'Usuario y/o Contraseña incorrecto/s'
+           )
+
+            
+        }
 
     })
     .catch((error) => {
-      console.error(error);
+       //el backend nunca devuelve error siempre entra por success
+       Alert.alert(
+         'Error'
+      )
+
+      console.log(error);
     })
 
 
+  } //else
 
   
 
@@ -158,34 +136,48 @@ login(){
             <View style={styles.formContainer}>
                              
                     <TextInput  
-                    style = {styles.input}   
-                    placeholder="Email"
-                    placeholderTextColor='rgba(225,225,225,0.7)'
-                    keyboardType='email-address'
-                     onChangeText={(email) => this.setState({email})} />
+                      style = {styles.input}   
+                      placeholder="Email"
+                      placeholderTextColor='rgba(225,225,225,0.7)'
+                      keyboardType='email-address'
+                      onChangeText={(email) => this.setState({email})} 
+                    />
                    
                     <TextInput 
-                     style = {styles.input}    
-                     placeholder="Contraseña" 
-                    placeholderTextColor='rgba(225,225,225,0.7)'
-                     onChangeText={(pass) => this.setState({pass})} />
+                      style = {styles.input}    
+                      placeholder="Contraseña" 
+                      placeholderTextColor='rgba(225,225,225,0.7)'
+                      secureTextEntry={true}
+                      onChangeText={(pass) => this.setState({pass})} 
+                    />
+
+                    {this.showActivity()}
                    
 
-                    <TouchableOpacity 
-                     style={styles.buttonContainer} 
-                     onPress={this.login}
-                    >
-                     <Text style={styles.buttonText}> Ingresar </Text>
-                    </TouchableOpacity >
+                   
 
             </View>
-
-       
 
      
       </View>
     );
   }
+
+  showActivity() {
+
+      if(this.state.loading)
+      {
+         return <ActivityIndicator  size="large" color="#0000ff" />  ;
+      }
+      else
+      {
+         return  <TouchableOpacity style={styles.buttonContainer} onPress={this.login}>
+                        <Text style={styles.buttonText}> Ingresar </Text>
+                    </TouchableOpacity >  ;
+      }
+      
+  }
+
 }
 
 const styles = StyleSheet.create({
