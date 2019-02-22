@@ -51,67 +51,56 @@ export default class Login extends Component {
 
 login(){
 
-  if (this.state.email=='' || this.state.pass=='') {
-     Alert.alert(
-         'Email y/o Contraseña no puede/n estar vacio/s'
-      )
-  } else 
+  if (this.state.email=='' || this.state.pass=='') 
   {
-
-  // http://10.1.3.10/tickets/public/api/oauth/login
-  this.setState({ 'loading': true })
-  fetch('https://soporte.educaciondigitaltuc.gob.ar/api/oauth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-       
-      },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.pass,
+      Alert.alert('Email y/o Contraseña no puede/n estar vacio/s')
+  } 
+  else 
+  {
+      // https://soporte.educaciondigitaltuc.gob.ar/api/oauth/login'
+      // http://192.168.2.102/tickets/public/api/oauth/login
+      this.setState({ 'loading': true })
+      fetch('http://192.168.2.102/tickets/public/api/oauth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+           
+          },
+          body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.pass,
+          })
       })
-  })
-   .then(response => response.json())
-    .then((responseJson) => {
-      // si no esta autorizado devuelve {message: "Unauthorized"}
-      //pero entra por success no por error asi que tengo q tomarlo de esta forma
-      // console.log(responseJson)
-      this.setState({ 'loading': false })
+       .then(response => response.json())
+        .then((responseJson) => {
+          // si no esta autorizado devuelve {message: "Unauthorized"}
+          //pero entra por success no por error asi que tengo q tomarlo de esta forma
+          // console.log(responseJson)
+          this.setState({ 'loading': false })
 
-      // {access_token: "eyJ..", token_type: "Bearer", expires_at: "2019-12-06 16:26:46"}
-      if(responseJson.access_token != undefined)
-        { 
-            this._storeToken(responseJson.access_token)
-            this.props.navigation.navigate('Tickets')
-        }
-      else
-        // Los errores de validacion tambien entran por aqui
-        //{message: "The given data was invalid.", errors: { email: ["El campo email no corresponde con una dirección de e-mail válida."]}}
-
-
-        {
-            Alert.alert(
-           'Usuario y/o Contraseña incorrecto/s'
-           )
-
-            
-        }
-
-    })
-    .catch((error) => {
-       //el backend nunca devuelve error siempre entra por success
-       Alert.alert(
-         'Error'
-      )
-
-      console.log(error);
-    })
-
-
+                // {access_token: "eyJ..", token_type: "Bearer", expires_at: "2019-12-06 16:26:46"}
+          if(responseJson.access_token != undefined)
+            { 
+                this._storeToken(responseJson.access_token)
+                this.props.navigation.navigate('Tickets')
+            }
+          else
+            {
+                // Los errores de validacion tambien entran por aqui
+                //{message: "The given data was invalid.", errors: { email: ["El campo email no corresponde con una dirección de e-mail válida."]}}
+                Alert.alert('Usuario y/o Contraseña incorrecto/s')    
+            }
+        })
+        .catch((error) => {
+           //el backend nunca devuelve error siempre entra por success
+           Alert.alert(
+             'Error'
+          )
+        })
+        
   } //else
 
-  
 
 }
 

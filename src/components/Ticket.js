@@ -1,20 +1,18 @@
 import React, { Component } from "react";
 
-import { StyleSheet, Alert,FlatList,AsyncStorage,TouchableHighlight,View,  ScrollView, Image} from 'react-native';
-import { Text,Textarea, Form,CheckBox,ListItem,Button,Body} from 'native-base';
+import { StyleSheet,View,Text} from 'react-native';
 
 import HTML from 'react-native-render-html';
 import moment from 'moment';
 import "moment/min/locales";
 
 
-
 export default class Ticket extends Component {
+
 
   render() {
 
-   
-    return (
+   return (
      
 
                   <View style={styles.Container}>
@@ -61,8 +59,8 @@ export default class Ticket extends Component {
 
 
                        <View  style={styles.Body}>
-                          <HTML html={this.props.ticket.cuerpo}  />
-                       </View>
+                          <HTML html={this.props.ticket.cuerpo }/> 
+                        </View>
 
                         <View  style={styles.Footer}>
 

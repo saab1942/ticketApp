@@ -14,14 +14,14 @@ import test from './src/components/test'
 
 const tabTickets = createBottomTabNavigator(
   {
-    Tickets: Tickets,
-    MyTickets: MyTickets,
+    TICKETS: Tickets,
+    MIOS: MyTickets,
   },
 
   {
     tabBarOptions: {
-      activeTintColor: '#E18F34',
-      inactiveTintColor : '#FFFACD',
+      activeTintColor: '#FFFFFF',
+      inactiveTintColor : '#FFE19D',
       labelStyle: {
         fontSize: 16,
         fontWeight: 'bold'
@@ -30,7 +30,7 @@ const tabTickets = createBottomTabNavigator(
         width: 100,
       },
       style: {
-        backgroundColor: '#EDE5A6',
+        backgroundColor: '#E9C169',
         padding: 12
       },
     }

@@ -5,7 +5,7 @@ export default class HelloWorldApp extends Component {
   render() {
     return (
       <View>
-        <Text>Hello world!</Text>
+        <Text>Hello woreasdfasdfld!</Text>
       </View>
     );
   }
